@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head  >
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Dashboard Template for Bootstrap</title>
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+		<link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+
+		<style type="text/css">
+			/* Chart.js */
+			@-webkit-keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			
+			@keyframes chartjs-render-animation {
+				from {
+					opacity: 0.99
+				}
+				to {
+					opacity: 1
+				}
+			}
+			.chartjs-render-monitor {
+				-webkit-animation: chartjs-render-animation 0.001s;
+				animation: chartjs-render-animation 0.001s;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--引入topbar-->
+		<div th:replace="common/bar :: topbar"></div>
+		<div class="container-fluid">
+			<div class="row">
+				<!--引入sidebar页面-->
+				<div th:replace="common/bar :: #sidebar(activeUri='Emps')"></div>
+				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<form th:action="@{/emp}" method="post">
+						<!--把post请求转成put请求的步骤-->
+
+						<!--怎样把get请求或者post请求转变成put-->
+						<!--1:Spingmvc中配置HiddenHttpMethodFilter (Springboot已经给我们配置好了)-->
+						<!--2:创建一个表单-->
+						<!--3：创建一个input项，name="_method" ,值就是我们指定的请求方式-->
+						<input type="hidden"  name="_method" value="put" th:if="${emp!=null}"/>
+
+						<input type="hidden"  name="id" th:value="${emp.id}" th:if="${emp!=null}"/><!--如果是修改就把id带过去-->
+
+						<div class="form-group">
+							<label>lastName</label>
+							<input type="text" name="lastName" th:value="${emp!=null}?${emp.lastName}" class="form-control" >
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="email" name="email" th:value="${emp!=null}?${emp.email}" class="form-control" >
+						</div>
+						<div class="form-group">
+							<label>Gender</label>
+							<div>
+								<label>
+									<input type="radio" th:checked="${emp!=null}?${emp.gender==0}" name="gender" value="0" checked>男
+								</label>
+								<label>
+									<input type="radio" th:checked="${emp!=null}?${emp.gender==1}" name="gender" value="1">女
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>department</label>
+							<select class="form-control" name="department.id">
+								<option th:text="${dept.departmentName}" th:value="${dept.id}" th:selected="${emp!=null}?${dept.id==emp.department.id}" th:each="dept : ${departments}"></option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>birth</label>
+							<input type="text" name="birth" th:value="${emp!=null}?${#dates.format(emp.birth, 'yyyy-mm-dd')}" class="form-control">
+						</div>
+
+						<button type="submit" th:text="${emp!=null}?'修改':'添加'" class="btn btn-primary">添加</button>
+
+					</form>
+				</main>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" th:src="@{/asserts/js/jquery-3.2.1.slim.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/asserts/js/popper.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/asserts/js/bootstrap.min.js}" ></script>
+
+		<!-- Icons -->
+		<script type="text/javascript" th:src="@{/asserts/js/feather.min.js}" ></script>
+		<script>
+            feather.replace()
+		</script>
+
+		<!-- Graphs -->
+		<script type="text/javascript" th:src="@{/asserts/js/Chart.min.js}" ></script>
+
+	</body>
+
+</html>

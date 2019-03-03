@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div th:text="${hello}"></div>
+    <div th:utext="${hello}"></div>
+
+    <table>
+        <tr th:each="p : ${person}">
+            <td th:text="${p}">Onions</td>
+        </tr>
+    </table>
+11
+    <table>
+        <div th:text="${user}" th:each="user : ${persion}"></div> <!--每一个元素都会生成一个div-->
+
+        <span th:each="p : ${persion}">[[${p}]]</span>  <!--行内的写法-->
+
+        <tr th:each="p : ${person}">
+            <td th:text="${p}"></td>
+        </tr>
+    </table>
+
+</body>
+</html>
